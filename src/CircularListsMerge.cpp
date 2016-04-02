@@ -34,10 +34,12 @@ struct node{
 };
 void concat(struct node **list1, struct node **list2);
 int lengthOfLoop(struct node **q);
+void sort(struct node **head);
 int merge_circularlists(struct node **head1, struct node **head2){
-	if (head1==NULL||head2==NULL)
-	return -1;
+	if (head1 == NULL || head2 == NULL)
+		return -1;
 	concat(head1, head2);
+	sort(head1);
 	int n = lengthOfLoop(head1);
 
 	return n;
@@ -47,28 +49,47 @@ void concat(struct node **list1, struct node **list2)
 {
 
 	struct node *temp;
-
-	/* if the first linked list is empty */
 	if (*list1 == NULL)
 		*list1 = *list2;
 	else
 	{
-		/* if both linked lists are non-empty */
+		
 		if (*list2 != NULL)
 		{
-			temp = *list1;  /* points to the starting of the first list */
-			/* traverse the entire first linked list */
+			temp = *list1; 
 			while (temp->next != NULL){
 				temp = temp->next;
 			}
 
-			temp->next = *list2;  /* concatenate the second list after the
-							  first */
+			temp->next = *list2;  
 
 		}
 	}
 
 }
+void sort(struct node **head)
+{
+	int counter = 0;
+	struct node *curr=*head;
+	struct node *tmp = (struct node*)malloc(sizeof(struct node));
+
+	for (int i = 0; i < counter; i++)
+	{
+		for (int j = 0; j < counter; j++)
+		{
+			if (curr->data > curr->next->data)
+			{
+				tmp->data = curr->data;
+				curr->data = curr->next->data;
+				curr->next->data = tmp->data;
+				counter++;
+			}
+		}
+	}
+}
+
+
+
 
 int lengthOfLoop(struct node **q)
 {
@@ -76,7 +97,6 @@ int lengthOfLoop(struct node **q)
 	int c = 0;
 	struct node *temp;
 	temp = *q;
-	/* traverse the entire linked list */
 	while (temp->next != NULL)
 	{
 		temp = temp->next;
