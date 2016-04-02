@@ -28,7 +28,78 @@ struct node{
 	struct node *next;
 };
 
+int count_leap(int date, int month, int year);
+int convert_sll_2digit_to_int(struct node *head, int len1);
+int between_days(struct node *date1head, struct node *date2head)
+{
+	if (date1head == NULL || date1head == NULL)
+		return -1;
+	int monthDays[12] = { 31, 28, 31, 30, 31, 30,
+		31, 31, 30, 31, 30, 31 };
+	int date1 = convert_sll_2digit_to_int(date1head, 2);
+	int date2 = convert_sll_2digit_to_int(date2head, 2);
+	int count = 0;
+	while (count != 2)
+	{
+		date1head = date1head->next;
+		date2head = date2head->next;
+		count++;
+	}
+	int month1 = convert_sll_2digit_to_int(date1head, 2);
+	int month2 = convert_sll_2digit_to_int(date2head, 2);
+	count = 0;
+	while (count != 2)
+	{
+		date1head = date1head->next;
+		date2head = date2head->next;
+		count++;
+	}
+	int year1 = convert_sll_2digit_to_int(date1head, 4);
+	int year2 = convert_sll_2digit_to_int(date2head, 4);
+	printf("%d", year1);
+	printf("%d", year2);
+	long int n1 = year1 * 365 + date1;
+	for (int index = 0; index<month1 - 1; index++)
+		n1 += monthDays[index];
+	n1 += count_leap(date1, month1, year1);
+	long int n2 = year2 * 365 + date2;
+	for (int i = 0; i < month2 - 1; i++)
+		n2 += monthDays[i];
+	n2 += count_leap(date2, month2, year2);
+	return (n2 - n1 - 1);
+	
+}
+int count_leap(int date, int month, int year)
+{
+	if (month <= 2)
+		year--;
+	return year / 4 - year / 100 + year / 400;
+}
 
-int between_days(struct node *date1head, struct node *date2head){
-	return -1;
+int convert_sll_2digit_to_int(struct node *head,int len1)
+{
+	struct node *ptr;
+	ptr = head;
+	int Arr[100], count = 0, index = 0, c = 0;
+	if (ptr == NULL)
+		return NULL;
+	ptr = head;
+	while (c != len1){
+		Arr[index] = ptr->data;
+		index++;
+		ptr = ptr->next;
+		c++;
+	}
+	int len = index;
+	Arr[len] = '\0';
+	long int num = 0, product;
+	for (index = 0; index<2; index++)
+	{
+		product = 10;
+		while (Arr[index] >= product)
+			product *= 10;
+		num *= product;
+		num += Arr[index];
+	}
+	return num;
 }

@@ -32,7 +32,55 @@ struct node{
 	int data;
 	struct node *next;
 };
+void concat(struct node **list1, struct node **list2);
+int lengthOfLoop(struct node **q);
 int merge_circularlists(struct node **head1, struct node **head2){
-	//Returns Length of merged Sorted circular SLL and also points *head1 to final SLL .
+	if (head1==NULL||head2==NULL)
 	return -1;
+	concat(head1, head2);
+	int n = lengthOfLoop(head1);
+
+	return n;
+
+}
+void concat(struct node **list1, struct node **list2)
+{
+
+	struct node *temp;
+
+	/* if the first linked list is empty */
+	if (*list1 == NULL)
+		*list1 = *list2;
+	else
+	{
+		/* if both linked lists are non-empty */
+		if (*list2 != NULL)
+		{
+			temp = *list1;  /* points to the starting of the first list */
+			/* traverse the entire first linked list */
+			while (temp->next != NULL){
+				temp = temp->next;
+			}
+
+			temp->next = *list2;  /* concatenate the second list after the
+							  first */
+
+		}
+	}
+
+}
+
+int lengthOfLoop(struct node **q)
+{
+
+	int c = 0;
+	struct node *temp;
+	temp = *q;
+	/* traverse the entire linked list */
+	while (temp->next != NULL)
+	{
+		temp = temp->next;
+		c++;
+	}
+	return c;
 }
